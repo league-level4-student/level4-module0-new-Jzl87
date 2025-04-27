@@ -35,15 +35,30 @@ public class Snake {
 
 		/*
 		 * Create variables for the next X and Y location of the snake's head.
-		 * Initialize them to the current X and Y locations.
+		 * Initialize them to the current X and Y locations
 		 */
-
+		int nextX = getHeadLocation().getX();
+		int nextY = getHeadLocation().getY();
+		
 		/*
 		 * Use a switch statement to check on the currentDirection of the snake and
 		 * calculate the head's next x and y position. Depending on the direction, the
 		 * variables you created may increase or decrease by 1.
 		 */
-
+		switch (currentDirection) {
+		case UP:
+			nextY --;
+			break;
+		case DOWN:
+			nextY ++;
+			break;
+		case LEFT:
+			nextX--;
+			break;
+		case RIGHT:
+			nextX ++;
+			break;
+		}
 		/*
 		 * Change the Location of each SnakeSegment in your snake ArrayList to the
 		 * Location of the segment in front of it.
@@ -51,12 +66,16 @@ public class Snake {
 		 * Use a loop starting at the end of the ArrayList and stop before the head of
 		 * the snake (index 0) or you will go out of bounds.
 		 */
-
+		for (int z = snake.size() -1; z >0; z-- ) {
+			snake.set(z, snake.get(z-1));
+		}
 		/*
 		 * Create a new Location object and initialize it with the values calculated in
 		 * the first step. Then set the head's location equal to the new location.
 		 */
-
+		Location loc = new Location(nextX, nextY);
+		head.setLocation(loc);
+		canMove = true;
 		// Set the canMove member variable to true.
 
 	}
@@ -70,7 +89,10 @@ public class Snake {
 		 * 
 		 * Hint: Use the isNotOppositeDirection method.
 		 */
-
+		if (isNotOppositeDirection(direction) && canMove) {
+				currentDirection = direction;
+				canMove = false;
+		}
 	}
 
 	private boolean isNotOppositeDirection(Direction direction) {
@@ -82,8 +104,15 @@ public class Snake {
 		 * For example, if currentDirection is UP and the passed in direction is DOWN
 		 * this method should return false.
 		 */
-
-		return true;
+		boolean checkDirUP = direction.equals(direction.UP) && currentDirection.equals(direction.DOWN);
+		boolean checkDirDOWN = direction.equals(direction.DOWN) && currentDirection.equals(direction.UP);
+		boolean checkDirLEFT = direction.equals(direction.LEFT) && currentDirection.equals(direction.RIGHT);
+		boolean checkDirRIGHT = direction.equals(direction.RIGHT) && currentDirection.equals(direction.LEFT);
+		if (checkDirUP || checkDirDOWN|| checkDirLEFT||checkDirRIGHT) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	public void resetLocation() {
