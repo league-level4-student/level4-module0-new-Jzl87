@@ -158,7 +158,8 @@ public class SnakeGame implements ActionListener, KeyListener {
 	}
 
 	private void gameOver() {
-
+		System.out.println(snake.isOutOfBounds());
+		System.out.println(snake.isHeadCollidingWithBody());
 		// Stop the timer.
 		timer.stop();
 		// Tell the user their snake is dead.
@@ -193,12 +194,11 @@ public class SnakeGame implements ActionListener, KeyListener {
 		 * If the snake's head is colliding with its own body or out of bounds call the
 		 * gameOver method.
 		 */
-		Location h = snake.getHeadLocation();
-		if (h.getY() > HEIGHT || h.getY() < 0 || h.getX() > WIDTH || h.getX() < 0 || snake.isLocationOnSnake(h)) {
+		if (snake.isHeadCollidingWithBody() || snake.isOutOfBounds()) {
 			gameOver();
 		} 
 		
-		if (foodLocation.equals(h)) {
+		if (snake.isLocationOnSnake(foodLocation)) {
 			snake.feed();
 			randomizeFoodLocation();
 		}
